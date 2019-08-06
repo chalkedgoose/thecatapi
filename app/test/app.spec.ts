@@ -3,7 +3,8 @@ import http from 'chai-http';
 import app from '../app';
 const should: Chai.Should = chai.should();
 const expect: Chai.ExpectStatic = chai.expect;
-import { Cats } from '../models/cat'
+import { Cats } from '../models/cat';
+import uuid from 'uuid/v1';
 
 chai.use(http);
 
@@ -26,8 +27,9 @@ describe('Get Index Route Response /', function () {
 
 describe('POST and Create Single Cat /createCat', function () {
     it('status 201 ✅ and a 😸 Cat JSON', done => {
+        const id: string = uuid();
         chai.request(app).post("/createCat")
-            .send({ image: "", age: 3, name: "Mr.Mittens", price: 350.4 })
+            .send({ image: "", age: 3, name: "Mr.Mittens", price: 350.4, id: id })
             .end((err: Error, response: ChaiHttp.Response) => {
                 if (err) console.error(err);
                 response.should.have.status(201);
@@ -35,6 +37,7 @@ describe('POST and Create Single Cat /createCat', function () {
                 expect(response.body.age).to.be.equal(3);
                 expect(response.body.price).to.be.equal(350.4);
                 expect(response.body.image).to.be.equal("");
+                expect(response.body.id).to.be.equal(id);
                 expect(response.status).to.be.equal(201);
             })
         done();
@@ -46,7 +49,8 @@ describe('POST and Create Multiple Cats /createCats', function () {
     it('status 201 ✅ & JSON of multiple Cats 🙀', done => {
         let payload = [];
         for (let i = 0; i <= count; i++) {
-            payload.push({ image: "", age: 3, name: "Mr.Mittens", price: 350.4 })
+            const id: string = uuid();
+            payload.push({ image: "", age: 3, name: "Mr.Mittens", price: 350.4, id: id });
         }
         chai.request(app).post("/createCats")
             .send(payload)

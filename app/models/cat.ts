@@ -5,7 +5,8 @@ export interface Cat {
     image: string,
     age: number,
     name: string,
-    price: number
+    price: number, 
+    id: string
 }
 
 /**

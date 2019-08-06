@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { Cat, Cats } from '../models/cat';
+import uuid from 'uuid/v1';
 
 export function createCatHandler(request: Request, response: Response) {
     try {
@@ -28,7 +29,7 @@ export function getCats(request: Request, response: Response) {
         const count = Math.floor(Math.random() * Math.floor(50));
         let payload = [];
         for (let i = 0; i <= count; i++) {
-            payload.push({ image: "", age: 3, name: "Mr.Mittens", price: 350.4 })
+            payload.push({ image: "", age: 3, name: "Mr.Mittens", price: 350.4, id: uuid()})
         }
         const data = <Cats>payload;
         response.status(200).json(data);
